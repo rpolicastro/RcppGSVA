@@ -863,7 +863,9 @@ ssgsea <- function(X, geneSets, alpha=0.25, parallel.sz,
   
   es <- bplapply(as.list(1:n), function(j) {
     geneRanking <- order(R[, j], decreasing=TRUE)
-    es_sample <- lapply(geneSets, .fastRndWalk, geneRanking, j, Ra)
+    ## Use the faster Cpp implementation for random walk.
+    # es_sample <- lapply(geneSets, .fastRndWalk, geneRanking, j, Ra)
+    es_sample <- lapply(geneSets, fasterRndWalk, geneRanking, j, Ra)
     
     unlist(es_sample)
   }, BPPARAM=BPPARAM)
